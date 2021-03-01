@@ -123,6 +123,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   // Then we add the earthquake layer to our map.
   allEarthquakes.addTo(map);
 
+
 // 3. Retrieve the major earthquake GeoJSON data >4.5 mag for the week.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson").then(function(data) {
 
@@ -149,7 +150,8 @@ function getColor(magnitude) {
   }
   if (magnitude < 4) {
     return "#ee9c00";
-  }
+  };
+}
 
 // 6. Use the function that determines the radius of the earthquake marker based on its magnitude.
 function getRadius(magnitude) {
@@ -180,8 +182,8 @@ style: styleInfo,
 // 8. Add the major earthquakes layer to the map.
 majorEq.addTo(map);
 // 9. Close the braces and parentheses for the major earthquake data.
+});
 
-};
 
 // Here we create a legend control object.
 let legend = L.control({
@@ -230,4 +232,4 @@ legend.onAdd = function() {
   });
 }); 
 
-}); 
+ 
