@@ -5,14 +5,21 @@ console.log("working");
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
-	accessToken: API_KEY
+	accessToken: API_Key
 });
 
 // We create the second tile layer that will be the background of our map.
-let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
-	accessToken: API_KEY
+	accessToken: API_Key
+});
+
+// We create the second tile layer that will be the background of our map.
+let dark = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+	maxZoom: 18,
+	accessToken: API_Key
 });
 
 // Create the map object with center, zoom level and default layer.
@@ -25,7 +32,8 @@ let map = L.map('mapid', {
 // Create a base layer that holds all three maps.
 let baseMaps = {
   "Streets": streets,
-  "Satellite": satelliteStreets
+  "Satellite": satelliteStreets,
+  "Dark": dark
 };
 
 // 1. Add a 3rd layer group for the major earthquake data.
@@ -172,7 +180,7 @@ style: styleInfo,
 // 8. Add the major earthquakes layer to the map.
 majorEq.addTo(map);
 // 9. Close the braces and parentheses for the major earthquake data.
-majorEq.addTo(map);
+
 };
 
 // Here we create a legend control object.
@@ -209,8 +217,17 @@ legend.onAdd = function() {
   legend.addTo(map);
 
 
-  // Use d3.json to make a call to get our Tectonic Plate geoJSON data.
-  d3.json().then(() {
-    
+  d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(function(platedata) {
+    L.geoJson(platedata,
+       {
+       color: "#ff6500",
+       weight: 2
+       }
+    )
+    .addTo(tectonicplates);
+
+    tectonicplates.addTo(map);
   });
-});
+}); 
+
+}); 
